@@ -1,41 +1,127 @@
 #include "main.h"
+
+void test(void);
+
 /**
- * _printf - is a function that selects the correct function to print.
- * @format: identifier to look for.
- * Return: the length of the string.
+ * _printf - prints everything
+ * @format: first string
+ * Return: the length of the printed content
  */
-int _printf(const char * const format, ...)
+
+int _printf(const char *format, ...)
 {
-	convert_match m[] = {
-		{"%s", printf_string}, {"%c", printf_char},
-		{"%%", printf_37},
-	};
+	int i, num = 0, len = 0, n;
+	char *string;
+	char *pointer;
+	char *reverse;
+	va_list type;
 
-	va_list args;
-	int i = 0, j, len = 0;
-
-	va_start(args, format);
-	if (format == NULL || (format[0] == '%' && format[1] == '\0'))
+	if (format == NULL)
 		return (-1);
-
-Here:
-	while (format[i] != '\0')
+	va_start(type, format);
+	for (i = 0; format[i] != '\0'; i++)
 	{
-		j = 13;
-		while (j >= 0)
+		if (format[i] == '%')
 		{
-			if (m[j].id[0] == format[i] && m[j].id[1] == format[i + 1])
+			if (format[i + 1] == '\0')
 			{
-				len += m[j].f(args);
-				i = i + 2;
-				goto Here;
+				return (-1);
 			}
-			j--;
+			switch (format[i + 1])
+			{
+			case 's':
+				len = _str(type);
+				i++;
+				num += len;
+				break;
+			case 'c':
+				len = _char(type);
+				i++;
+				num += len;
+				break;
+			case '%':
+				len = _mod(type);
+				i++;
+				num += len;
+				break;
+			case 'd':
+				n = va_arg(type, int);
+				len = _number(n, 'd');
+				i++;
+				num += len;
+				break;
+			case 'i':
+				n = va_arg(type, int);
+				len = _number(n, 'i');
+				i++;
+				num += len;
+				break;
+			case 'b':
+				n = va_arg(type, unsigned int);
+				len = _print_binary(n);
+				i++;
+				num += len;
+				break;
+			case 'u':
+				n = va_arg(type, unsigned int);
+				len = _number(n, 'u');
+				i++;
+				num += len;
+				break;
+			case 'o':
+				n = va_arg(type, unsigned int);
+				len = _number(n, 'o');
+				i++;
+				num += len;
+				break;
+			case 'x':
+				n = va_arg(type, unsigned int);
+				len = _number(n, 'x');
+				i++;
+				num += len;
+				break;
+			case 'X':
+				n = va_arg(type, unsigned int);
+				len = _number(n, 'X');
+				i++;
+				num += len;
+				break;
+			case 'S':
+				string = va_arg(type, char *);
+				len = _nonprintable(string);
+				i++;
+				num += len;
+				break;
+			case 'p':
+				pointer = va_arg(type, char *);
+				len = pointer_print(pointer);
+				i++;
+				num += len;
+				break;
+			case 'r':
+				reverse = va_arg(type, char *);
+				len = reverse_print(reverse);
+				i++;
+				num += len;
+				break;
+			case 'R':
+				string = va_arg(type, char *);
+				len = _rot13(string);
+				i++;
+				num += len;
+				break;
+			default:
+				write(1, &format[i], 1);
+				num++;
+				break;
+			}
 		}
-		_putchar(format[i]);
-		len++;
-		i++;
+		else
+		{
+			write(1, &format[i], 1);
+			num++;
+		}
 	}
-	va_end(args);
-	return (len);
+	va_end(type);
+	return (num);
 }
