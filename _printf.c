@@ -45,71 +45,28 @@ int _printf(const char *format, ...)
 				num += len;
 				break;
 			case 'd':
-				n = va_arg(type, int);
-				len = _number(n, 'd');
-				i++;
-				num += len;
-				break;
+				pass
 			case 'i':
-				n = va_arg(type, int);
-				len = _number(n, 'i');
-				i++;
-				num += len;
-				break;
+				pass
 			case 'b':
-				n = va_arg(type, unsigned int);
-				len = _print_binary(n);
-				i++;
-				num += len;
-				break;
+				pass
 			case 'u':
-				n = va_arg(type, unsigned int);
-				len = _number(n, 'u');
-				i++;
-				num += len;
-				break;
+				pass
 			case 'o':
-				n = va_arg(type, unsigned int);
-				len = _number(n, 'o');
-				i++;
-				num += len;
-				break;
+				pass
 			case 'x':
-				n = va_arg(type, unsigned int);
-				len = _number(n, 'x');
-				i++;
-				num += len;
-				break;
+				pass
 			case 'X':
-				n = va_arg(type, unsigned int);
-				len = _number(n, 'X');
-				i++;
-				num += len;
-				break;
+				pass
 			case 'S':
-				string = va_arg(type, char *);
-				len = _nonprintable(string);
-				i++;
-				num += len;
-				break;
+				pass
 			case 'p':
-				pointer = va_arg(type, char *);
-				len = pointer_print(pointer);
-				i++;
-				num += len;
-				break;
+				pass
 			case 'r':
-				reverse = va_arg(type, char *);
-				len = reverse_print(reverse);
-				i++;
-				num += len;
-				break;
+				pass
 			case 'R':
-				string = va_arg(type, char *);
-				len = _rot13(string);
-				i++;
-				num += len;
-				break;
+
+				pass;
 			default:
 				write(1, &format[i], 1);
 				num++;
